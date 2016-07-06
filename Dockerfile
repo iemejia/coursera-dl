@@ -1,7 +1,10 @@
 FROM python:3-alpine
 
 # Install requirements
-RUN apk add --no-cache g++ libffi-dev openssl-dev
+RUN set -x && \
+    apk --update add --virtual build-dependencies curl python-dev g++ libffi-dev openssl-dev && \
+    pip install coursera-dl && \
+    apk del build-dependencies && \
+    rm -rf /var/cache/apk/*
 
-RUN pip install coursera-dl
 CMD ["coursera-dl"]
